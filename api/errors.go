@@ -35,6 +35,8 @@ var (
 	ErrorNotDeleted             = ErrorTemplate{Code: 10019, Message: "Resource not deleted", status: http.StatusBadRequest}
 	ErrorAlreadyExist           = ErrorTemplate{Code: 10020, Message: "Resource already exist", status: http.StatusBadRequest}
 	ErrorDisabled               = ErrorTemplate{Code: 10021, Message: "Disabled", status: http.StatusBadRequest}
+	ErrorMissTimezone           = ErrorTemplate{Code: 10022, Message: "There is no timezone", status: http.StatusBadRequest}
+	ErrorInvalidTimezone        = ErrorTemplate{Code: 10023, Message: "Invalid timezone", status: http.StatusBadRequest}
 
 	// User Error
 	ErrorPasswordInvalid               = ErrorTemplate{Code: 20001, Message: "Invalid password", status: http.StatusBadRequest}
