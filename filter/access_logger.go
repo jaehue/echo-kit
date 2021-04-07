@@ -16,6 +16,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/jaehue/converter"
 	"github.com/labstack/echo"
 	"github.com/labstack/gommon/random"
 	"github.com/sirupsen/logrus"
@@ -30,19 +31,19 @@ type AccessLog struct {
 	SessionID string `json:"session_id,omitempty"`
 	RequestID string `json:"request_id,omitempty"`
 
-	Timestamp     time.Time     `json:"timestamp,omitempty"`
-	RemoteIP      string        `json:"remote_ip,omitempty"`
-	Host          string        `json:"host,omitempty"`
-	Uri           string        `json:"uri,omitempty"`
-	Method        string        `json:"method,omitempty"`
-	Path          string        `json:"path,omitempty"`
-	Referer       string        `json:"referer,omitempty"`
-	UserAgent     string        `json:"user_agent,omitempty"`
-	Status        int           `json:"status,omitempty"`
-	Latency       time.Duration `json:"latency,omitempty"`
-	RequestLength int64         `json:"request_length,omitempty"`
-	BytesSent     int64         `json:"bytes_sent,omitempty"`
-	Hostname      string        `json:"hostname,omitempty"`
+	Timestamp     time.Time `json:"timestamp,omitempty"`
+	RemoteIP      string    `json:"remote_ip,omitempty"`
+	Host          string    `json:"host,omitempty"`
+	Uri           string    `json:"uri,omitempty"`
+	Method        string    `json:"method,omitempty"`
+	Path          string    `json:"path,omitempty"`
+	Referer       string    `json:"referer,omitempty"`
+	UserAgent     string    `json:"user_agent,omitempty"`
+	Status        int       `json:"status,omitempty"`
+	Latency       float64   `json:"latency,omitempty"`
+	RequestLength int64     `json:"request_length,omitempty"`
+	BytesSent     int64     `json:"bytes_sent,omitempty"`
+	Hostname      string    `json:"hostname,omitempty"`
 
 	Body       interface{}            `json:"body,omitempty"`
 	Params     map[string]interface{} `json:"params,omitempty"`
@@ -100,7 +101,10 @@ func AccessLogger(writer AccessLogWriter) echo.MiddlewareFunc {
 
 			accessLog.Status = res.Status
 			accessLog.BytesSent = res.Size
-			accessLog.Latency = stop.Sub(start)
+			accessLog.Latency = converter.ToFixedNumber(
+				float64(stop.Sub(start))/float64(time.Second),
+				&converter.Setting{RoundDigit: 6, RoundStrategy: "ceil"},
+			)
 			accessLog.Controller, accessLog.Action = echoRouter.getControllerAndAction(c)
 			if body != nil {
 				body := passwordRegex.ReplaceAll(body, []byte(`"$1": "*"`))
