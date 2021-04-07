@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/base64"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"net"
@@ -81,7 +82,17 @@ func AccessLogger(writer AccessLogWriter) echo.MiddlewareFunc {
 			start := time.Now()
 			if err = next(c); err != nil {
 				c.Error(err)
-				accessLog.Error = err.Error()
+				var echoHTTPError *echo.HTTPError
+				if ok := errors.As(err, &echoHTTPError); ok && echoHTTPError != nil {
+					if echoHTTPError.Internal != nil {
+						accessLog.Error = echoHTTPError.Internal.Error()
+					} else {
+						accessLog.Error = echoHTTPError.Error()
+					}
+				} else {
+					accessLog.Error = err.Error()
+				}
+
 			}
 			stop := time.Now()
 

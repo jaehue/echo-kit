@@ -76,7 +76,11 @@ func (t ErrorTemplate) New(err error, v ...interface{}) Error {
 }
 
 func (e Error) Error() string {
-	return e.Details
+	msg := fmt.Sprintf("[%d]%s", e.Code, e.Message)
+	if e.Message != e.Details {
+		msg += fmt.Sprintf("(%s)", e.Details)
+	}
+	return msg
 }
 
 func (e Error) Unwrap() error {
