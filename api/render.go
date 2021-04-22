@@ -14,22 +14,17 @@ func RenderFail(c echo.Context, err error) error {
 	}
 
 	var apiError Error
-	if ok := errors.As(err, &apiError); ok {
-		return &echo.HTTPError{
-			Code: apiError.Status(),
-			Message: Result{
-				Error: apiError,
-			},
-			Internal: apiError,
-		}
+	if ok := errors.As(err, &apiError); !ok {
+		apiError = ErrorUnknown.New(err)
+
 	}
 
 	return &echo.HTTPError{
-		Code: http.StatusInternalServerError,
-		Message: Error{
-			Message: err.Error(),
+		Code: apiError.Status(),
+		Message: Result{
+			Error: apiError,
 		},
-		Internal: err,
+		Internal: apiError,
 	}
 }
 
