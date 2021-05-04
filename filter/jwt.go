@@ -5,11 +5,11 @@ import (
 	"strings"
 
 	"github.com/jaehue/echo-kit/api"
+	"github.com/jaehue/echo-kit/wildcard"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
-	"github.com/minio/minio/pkg/wildcard"
 )
 
 type JWTConfig struct {
