@@ -33,7 +33,7 @@ var (
 	ErrorNotUpdated             = ErrorTemplate{Code: 10017, Message: "Resource not updated", status: http.StatusBadRequest}
 	ErrorNotCreated             = ErrorTemplate{Code: 10018, Message: "Resource not created", status: http.StatusBadRequest}
 	ErrorNotDeleted             = ErrorTemplate{Code: 10019, Message: "Resource not deleted", status: http.StatusBadRequest}
-	ErrorStatusConflict         = ErrorTemplate{Code: 10020, Message: "Invalid timezone", status: http.StatusConflict}
+	ErrorStatusConflict         = ErrorTemplate{Code: 10020, Message: "Status conflict", status: http.StatusConflict}
 	ErrorAlreadyExist           = ErrorTemplate{Code: 10021, Message: "Resource already exist", status: http.StatusBadRequest}
 	ErrorDisabled               = ErrorTemplate{Code: 10022, Message: "Disabled", status: http.StatusBadRequest}
 	ErrorMissTimezone           = ErrorTemplate{Code: 10023, Message: "There is no timezone", status: http.StatusBadRequest}
@@ -45,6 +45,9 @@ var (
 	ErrorSmsVerificationExpired        = ErrorTemplate{Code: 20003, Message: "Verification number is expired", status: http.StatusBadRequest}
 	ErrorSendMultipleSmsInShortTime    = ErrorTemplate{Code: 20004, Message: "Please wait a few minutes before you try again.", status: http.StatusBadRequest}
 	ErrorSmsVerificationInvalidTooMany = ErrorTemplate{Code: 20005, Message: "You have entered the wrong verification code too many times", status: http.StatusBadRequest}
+
+	// Business
+	ErrorInvalidStatus = ErrorTemplate{Code: 30005, Message: "Invalid status", status: http.StatusBadRequest}
 )
 
 var errorMessagePrefix string
