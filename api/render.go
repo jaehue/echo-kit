@@ -4,8 +4,8 @@ import (
 	"errors"
 	"net/http"
 
-	"github.com/go-xorm/xorm"
-	"github.com/labstack/echo"
+	"github.com/labstack/echo/v4"
+	"xorm.io/xorm"
 )
 
 func RenderFail(c echo.Context, err error) error {
